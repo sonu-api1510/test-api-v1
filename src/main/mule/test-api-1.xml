@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="bcbed67e-5a33-41fa-b3b6-4c091c862066" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="test-api-1Flow" doc:id="55682ea7-16a0-4ddd-be8c-8d8f55b8f881" >
+		<http:listener doc:name="Listener" doc:id="4185036f-73af-4474-bd5a-3a737db7f853" config-ref="HTTP_Listener_config" path="/api"/>
+		<set-payload value='#[message: "Sonu"]' doc:name="Set Payload" doc:id="be123a17-43a5-4066-b57b-412ed1ee58a4" />
+		<ee:transform doc:name="Transform Message" doc:id="ff20388e-88b1-47e9-ad6b-979d523119f0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="f14c0ac3-dd82-42e8-87e0-df9cab1b32e1" message='message: "Hello"'/>
+	</flow>
+</mule>
